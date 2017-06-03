@@ -58,15 +58,20 @@ public class HelloWebServer {
 
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.option(ChannelOption.SO_REUSEADDR, true);
-			b.group(loupGroup).channel(serverChannelClass).childHandler(new HelloServerInitializer(loupGroup.next(), sslCtx));
+			b.group(loupGroup).channel(serverChannelClass);
 			b.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(true));
 			b.childOption(ChannelOption.SO_REUSEADDR, true);
 
+			b.childHandler(new HelloServerInitializer(loupGroup.next(), null));
 			Channel ch = b.bind(inet).sync().channel();
+
+			b.childHandler(new HelloServerInitializer(loupGroup.next(), sslCtx));
+			Channel chS = b.bind(new InetSocketAddress(8443)).sync().channel();
 
 			System.out.printf("Httpd started. Listening on: %s%n", inet.toString());
 
 			ch.closeFuture().sync();
+			chS.closeFuture().sync();
 		} finally {
 			loupGroup.shutdownGracefully().sync();
 		}
