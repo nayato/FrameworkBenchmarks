@@ -42,7 +42,7 @@ public class HelloWebServer {
 		}
 	}
 
-	private void doRun(EventLoopGroup loupGroup, Class<? extends ServerChannel> serverChannelClass, boolean isNative) throws InterruptedException {
+	private void doRun(EventLoopGroup loupGroup, Class<? extends ServerChannel> serverChannelClass, boolean isNative) throws Exception {
 		try {
         SelfSignedCertificate ssc = new SelfSignedCertificate();
         SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
