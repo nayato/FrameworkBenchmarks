@@ -16,6 +16,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetector.Level;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 public class HelloWebServer {
 
@@ -41,6 +44,10 @@ public class HelloWebServer {
 
 	private void doRun(EventLoopGroup loupGroup, Class<? extends ServerChannel> serverChannelClass, boolean isNative) throws InterruptedException {
 		try {
+        SelfSignedCertificate ssc = new SelfSignedCertificate();
+        SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
+            .build();
+
 			InetSocketAddress inet = new InetSocketAddress(port);
 
 			ServerBootstrap b = new ServerBootstrap();
@@ -51,7 +58,7 @@ public class HelloWebServer {
 
 			b.option(ChannelOption.SO_BACKLOG, 1024);
 			b.option(ChannelOption.SO_REUSEADDR, true);
-			b.group(loupGroup).channel(serverChannelClass).childHandler(new HelloServerInitializer(loupGroup.next()));
+			b.group(loupGroup).channel(serverChannelClass).childHandler(new HelloServerInitializer(loupGroup.next(), sslCtx));
 			b.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(true));
 			b.childOption(ChannelOption.SO_REUSEADDR, true);
 
