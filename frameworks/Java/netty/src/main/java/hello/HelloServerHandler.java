@@ -95,34 +95,34 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<HttpRequest>
 	public void channelRead0(ChannelHandlerContext ctx, HttpRequest msg) throws Exception {
 		try
 		{
-		HttpRequest request = (HttpRequest) msg;
-		String uriString = request.uri();
-		URI uri = new URI(uriString);
-		String path = uri.getRawPath();
-		List<NameValuePair> params = URLEncodedUtils.parse(uri, utf8);
-		int len = 13;
-		for (NameValuePair param : params) {
-			if (param.getName().equals("size")) {
-				len = Integer.parseInt(param.getValue());
+			HttpRequest request = (HttpRequest) msg;
+			String uriString = request.uri();
+			URI uri = new URI(uriString);
+			String path = uri.getRawPath();
+			List<NameValuePair> params = URLEncodedUtils.parse(uri, utf8);
+			int len = 13;
+			for (NameValuePair param : params) {
+				if (param.getName().equals("size")) {
+					len = Integer.parseInt(param.getValue());
+				}
 			}
+			
+			switch (path) {
+			case "/plaintext":
+				writeResponse(ctx, request, PLAINTEXT_CONTENT_BUFFER.slice(0, len), TYPE_PLAIN, String.valueOf(len));
+				return;
+			case "/json":
+				byte[] json = MAPPER.writeValueAsBytes(newMsg(len));
+				writeResponse(ctx, request, Unpooled.wrappedBuffer(json), TYPE_JSON, String.valueOf(json.length));
+				return;
+			}
+			FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, Unpooled.EMPTY_BUFFER, false);
+			ctx.write(response).addListener(ChannelFutureListener.CLOSE);
 		}
-		
-		switch (path) {
-		case "/plaintext":
-			writeResponse(ctx, request, PLAINTEXT_CONTENT_BUFFER.slice(0, len), TYPE_PLAIN, PLAINTEXT_CLHEADER_VALUE);
-			return;
-		case "/json":
-			byte[] json = MAPPER.writeValueAsBytes(newMsg(len));
-			writeResponse(ctx, request, Unpooled.wrappedBuffer(json), TYPE_JSON, String.valueOf(len));
-			return;
+		catch (Throwable t)
+		{
+			System.out.println(t.toString());
 		}
-		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, Unpooled.EMPTY_BUFFER, false);
-		ctx.write(response).addListener(ChannelFutureListener.CLOSE);
-	}
-	catch (Throwable t)
-	{
-		System.out.println(t.getMessage());
-	}
 	}
 
 	private void writeResponse(ChannelHandlerContext ctx, HttpRequest request, ByteBuf buf, CharSequence contentType, CharSequence contentLength) {
