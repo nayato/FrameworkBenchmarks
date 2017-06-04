@@ -93,6 +93,8 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<HttpRequest>
 
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, HttpRequest msg) throws Exception {
+		try
+		{
 		HttpRequest request = (HttpRequest) msg;
 		String uriString = request.uri();
 		URI uri = new URI(uriString);
@@ -116,6 +118,11 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<HttpRequest>
 		}
 		FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, Unpooled.EMPTY_BUFFER, false);
 		ctx.write(response).addListener(ChannelFutureListener.CLOSE);
+	}
+	catch (Throwable t)
+	{
+		System.out.println(t.getMessage());
+	}
 	}
 
 	private void writeResponse(ChannelHandlerContext ctx, HttpRequest request, ByteBuf buf, CharSequence contentType, CharSequence contentLength) {
