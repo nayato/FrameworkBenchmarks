@@ -44,7 +44,7 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 			{
 				case CONNECT:
 					System.out.printf("connect");
-					ctx.write(MqttMessageBuilders.connAck().build());
+					ctx.write(new MqttConnAckMessage(new MqttFixedHeader(MqttMessageType.CONNACK, false, MqttQoS.AT_MOST_ONCE, false, 2), new MqttConnAckVariableHeader(MqttConnectReturnCode.CONNECTION_ACCEPTED, false)));
 					break;
 				case PUBLISH:
 					MqttPublishMessage publish = (MqttPublishMessage)msg;
