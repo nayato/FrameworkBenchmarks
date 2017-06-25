@@ -43,6 +43,7 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 			switch (header.messageType())
 			{
 				case CONNECT:
+					System.out.printf("connect");
 					ctx.write(MqttMessageBuilders.connAck().build());
 					break;
 				case PUBLISH:
@@ -80,6 +81,7 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		System.out.printf(cause.toString());
 		ctx.close();
 	}
 
