@@ -79,7 +79,7 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		System.out.printf(cause.toString());
+		//System.out.printf(cause.toString());
 		ctx.close();
 	}
 
