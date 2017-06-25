@@ -5,8 +5,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.mqtt.*;
+// import io.netty.handler.codec.http.HttpRequestDecoder;
+// import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslContext;
 
 public class HelloServerInitializer extends ChannelInitializer<SocketChannel> {
@@ -25,8 +26,8 @@ public class HelloServerInitializer extends ChannelInitializer<SocketChannel> {
        	if (sslCtx != null) {
 		    p.addLast("tls", sslCtx.newHandler(ch.alloc()));
 		}
-		p.addLast("encoder", new HttpResponseEncoder());
-		p.addLast("decoder", new HttpRequestDecoder(4096, 8192, 8192, false));
+		p.addLast("encoder", MqttEncoder.INSTANCE);
+		p.addLast("decoder", new MqttDecoder(256*1024));
 		p.addLast("handler", new HelloServerHandler(service));
 	}
 }
