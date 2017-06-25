@@ -49,6 +49,7 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 					MqttPublishMessage publish = (MqttPublishMessage)msg;
 					switch (header.qosLevel()) {
 						case AT_LEAST_ONCE:
+							System.out.printf("qos1");
 							ctx.write(new MqttPubAckMessage(PubAckHeader, MqttMessageIdVariableHeader.from(publish.variableHeader().packetId())));
 							break;
 						case AT_MOST_ONCE:
