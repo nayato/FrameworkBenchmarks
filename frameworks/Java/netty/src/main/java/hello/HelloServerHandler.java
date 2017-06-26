@@ -1,30 +1,12 @@
 package hello;
 
-import java.net.URI;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.mqtt.*;
-import io.netty.util.AsciiString;
-import io.netty.util.CharsetUtil;
-import io.netty.util.concurrent.FastThreadLocal;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
+import io.netty.util.ReferenceCountUtil;
 
 public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage> {
 
@@ -74,6 +56,9 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 		catch (Throwable t)
 		{
 			System.out.println(t.toString());
+		}
+		finally {
+			ReferenceCountUtil.safeRelease(msg);
 		}
 	}
 
