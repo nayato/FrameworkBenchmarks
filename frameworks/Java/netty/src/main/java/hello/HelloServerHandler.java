@@ -57,9 +57,6 @@ public class HelloServerHandler extends SimpleChannelInboundHandler<MqttMessage>
 		{
 			System.out.println(t.toString());
 		}
-		finally {
-			ReferenceCountUtil.safeRelease(msg);
-		}
 	}
 
 	@Override
