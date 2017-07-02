@@ -19,6 +19,7 @@ import io.netty.util.ResourceLeakDetector.Level;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import java.io.File;
 
 public class HelloWebServer {
 
@@ -44,8 +45,10 @@ public class HelloWebServer {
 
 	private void doRun(EventLoopGroup loupGroup, Class<? extends ServerChannel> serverChannelClass, boolean isNative) throws Exception {
 		try {
-        SelfSignedCertificate ssc = new SelfSignedCertificate();
-        SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
+        //SelfSignedCertificate ssc = new SelfSignedCertificate();
+		File certFile = new File("identity.nokey.pem");
+		File keyFile = new File("identity.withkey.pem");
+        SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
             .build();
 
 			InetSocketAddress inet = new InetSocketAddress(port);
