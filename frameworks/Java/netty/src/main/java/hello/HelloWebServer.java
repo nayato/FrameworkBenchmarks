@@ -48,9 +48,9 @@ public class HelloWebServer {
         // SelfSignedCertificate ssc = new SelfSignedCertificate();
 		// System.out.println(ssc.certificate().getAbsolutePath());
 		// System.out.println(ssc.privateKey().getAbsolutePath());
-		File certFile = new File("identity.crt");
+		File certFile = new File("../identity.crt");
 		System.out.println(certFile.getAbsolutePath());
-		File keyFile = new File("identity-dec.key");
+		File keyFile = new File("../identity-dec.key");
 		System.out.println(keyFile.getAbsolutePath());
         SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
             .build();
