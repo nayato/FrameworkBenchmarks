@@ -45,7 +45,9 @@ public class HelloWebServer {
 
 	private void doRun(EventLoopGroup loupGroup, Class<? extends ServerChannel> serverChannelClass, boolean isNative) throws Exception {
 		try {
-        //SelfSignedCertificate ssc = new SelfSignedCertificate();
+        SelfSignedCertificate ssc = new SelfSignedCertificate();
+		System.out.println(ssc.certificate().getAbsolutePath());
+		System.out.println(ssc.privateKey().getAbsolutePath());
 		File certFile = new File("identity.nokey.pem");
 		File keyFile = new File("identity.withkey.pem");
         SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
