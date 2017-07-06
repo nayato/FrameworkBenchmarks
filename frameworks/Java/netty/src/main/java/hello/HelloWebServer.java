@@ -18,6 +18,7 @@ import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetector.Level;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import java.io.File;
 
@@ -53,7 +54,8 @@ public class HelloWebServer {
 		File keyFile = new File("../identity-dec.key");
 		System.out.println(keyFile.getAbsolutePath());
         SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
-            .build();
+            .sslProvider(SslProvider.OPENSSL)
+			.build();
 
 			InetSocketAddress inet = new InetSocketAddress(port);
 
