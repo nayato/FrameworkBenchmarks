@@ -49,13 +49,15 @@ public class HelloWebServer {
         // SelfSignedCertificate ssc = new SelfSignedCertificate();
 		// System.out.println(ssc.certificate().getAbsolutePath());
 		// System.out.println(ssc.privateKey().getAbsolutePath());
-		File certFile = new File("../identity.crt");
-		System.out.println(certFile.getAbsolutePath());
-		File keyFile = new File("../identity-dec.key");
-		System.out.println(keyFile.getAbsolutePath());
-        SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
-            .sslProvider(SslProvider.OPENSSL)
-			.build();
+
+		
+		// File certFile = new File("../identity.crt");
+		// System.out.println(certFile.getAbsolutePath());
+		// File keyFile = new File("../identity-dec.key");
+		// System.out.println(keyFile.getAbsolutePath());
+        // SslContext sslCtx = SslContextBuilder.forServer(certFile, keyFile)//ssc.certificate(), ssc.privateKey())
+        //     .sslProvider(SslProvider.OPENSSL)
+		// 	.build();
 
 			InetSocketAddress inet = new InetSocketAddress(port);
 
@@ -74,8 +76,8 @@ public class HelloWebServer {
 			b.childHandler(new HelloServerInitializer(loupGroup.next(), null));
 			Channel ch = b.bind(inet).sync().channel();
 
-			b.childHandler(new HelloServerInitializer(loupGroup.next(), sslCtx));
-			Channel chS = b.bind(new InetSocketAddress(8883)).sync().channel();
+			b.childHandler(new HelloServerInitializer(loupGroup.next(), null));//sslCtx));
+			Channel chS = b.bind(new InetSocketAddress(10080)).sync().channel();
 
 			System.out.printf("MQTTd started. Listening on: %s%n", inet.toString());
 
