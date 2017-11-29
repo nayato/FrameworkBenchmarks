@@ -76,8 +76,8 @@ public class HelloWebServer {
 			b.childHandler(new HelloServerInitializer(loupGroup.next(), null));
 			Channel ch = b.bind(inet).sync().channel();
 
-			b.childHandler(new HelloServerInitializer(loupGroup.next(), null));//sslCtx));
-			Channel chS = b.bind(new InetSocketAddress(10080)).sync().channel();
+			// b.childHandler(new HelloServerInitializer(loupGroup.next(), sslCtx));
+			// Channel chS = b.bind(new InetSocketAddress(8883)).sync().channel();
 
 			System.out.printf("MQTTd started. Listening on: %s%n", inet.toString());
 
@@ -93,7 +93,7 @@ public class HelloWebServer {
 		if (args.length > 0) {
 			port = Integer.parseInt(args[0]);
 		} else {
-			port = 8113;
+			port = 10080;
 		}
 		new HelloWebServer(port).run();
 	}
