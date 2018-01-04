@@ -4,14 +4,14 @@ pub struct Message {
 }
 
 #[allow(non_snake_case)]
-#[derive(Serialize, Queryable)]
+#[derive(Serialize)]//, Queryable)]
 pub struct World {
     pub id: i32,
     pub randomnumber: i32,
 }
 
 #[allow(non_snake_case)]
-#[derive(Serialize, Queryable)]
+#[derive(Serialize)]//, Queryable)]
 pub struct Fortune {
     pub id: i32,
     pub message: String,

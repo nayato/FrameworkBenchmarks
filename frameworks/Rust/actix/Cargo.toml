@@ -4,7 +4,7 @@ version = "0.0.1"
 build = "build.rs"
 
 [dependencies]
-askama = "0.5"
+# askama = "0.5"
 serde = "1.0"
 serde_json = "1.0"
 serde_derive = "1.0"
@@ -14,7 +14,7 @@ futures = "0.1"
 http = "0.1"
 actix = "^0.3.1"
 actix-web = { git = "https://github.com/actix/actix-web.git" }
-diesel = { version = "1.0.0-beta1", features = ["postgres"] }
+# diesel = { version = "1.0.0", features = ["postgres"] }
 
-[build-dependencies]
-askama = "0.5"
+# [build-dependencies]
+# askama = "0.5"
